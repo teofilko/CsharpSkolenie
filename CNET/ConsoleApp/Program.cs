@@ -3,46 +3,18 @@ using Model;
 using Data;
 Console.WriteLine("Hello, World!");
 
-int[] numbers = { 11, 2, 13, 44, -5, 6, 127, -99, 0, 256 };
+var numbers = new[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+var strings = new[] { "zero", "one", "two", "three", "four",
+    "five", "six", "seven", "eight", "nine" };
 
-//WHERE - filtracia
-var resNums = numbers.Where(n => n > 0 && n < 100);
+Console.WriteLine(numbers.Select(n => strings[n]).Aggregate("Result: ", (a, b) => a + b + ","));
+print(numbers.Select((n) => (strings[n])));
 
-resNums.ToList().ForEach(x => Console.WriteLine(x));
-foreach (var item in resNums)
+void print(IEnumerable<object> colection)
 {
-    Console.WriteLine(item);
-}
-
-Console.WriteLine();
-
-//ORDERBY
-var resOrder = numbers.OrderBy(x => x);
-
-//AGREGACIA
-var resMax = numbers.Max();//  .Max(x => x);
-var resSum = numbers.Sum();
-
-//TAKE SKIP
-var resTake = numbers.Take(2);
-var resTakeWhile = numbers.TakeWhile(x => x > 0);
-Console.WriteLine(resTakeWhile);
-
-//SELECT - transformacia
-Console.WriteLine(numbers.Select(x => Math.Abs(x)).ToList());
-
-Console.WriteLine(numbers.Where(x => x > 0).Count());
-
-Console.WriteLine(numbers.Distinct().OrderBy(n => n).Skip(1).SkipLast(1).Average());
-Console.WriteLine(numbers.Where(a => a % 2 == 0).Count());
-Console.WriteLine(numbers.Where(a => a % 2 != 0).Count());
-
-
-void print(object colection)
-{
-    foreach (object o in colection.)
+    foreach (object o in colection)
     {
-        Console.WriteLine(o)
+        Console.WriteLine(o);
     }
 }
 
