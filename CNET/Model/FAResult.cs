@@ -10,7 +10,13 @@
     /// </summary>
     public class FAResult
     {
-        
+        public  FAResult(string source, SourceType sourceType)
+        {
+            Source = source;
+            SourceType = sourceType;
+            Words = new Dictionary<string, int>();
+        }
+
         /// <summary>
         /// Zdroj textu
         /// </summary>
@@ -22,7 +28,7 @@
         /// </summary>
         public Dictionary<string,int> Words { get; set; }
 
-        public override string ToString() =>  $"{Source} {Words.Count}";
+        public override string ToString() =>  $"{Source} {Words?.Count}";
         
     }
 }
