@@ -1,17 +1,34 @@
-﻿namespace Data
+﻿using Model;
+using System.Text.RegularExpressions;
+namespace Data
 {
     public static class FreqAnalysis
     {
-        public static Dictionary<string, int> FreqAnalysisFromString(string input)
+        private static Dictionary<string, int> FreqAnalysisFromString(string input)
         {
-            //var result = new Dictionary<string,int>();
-            throw new NotImplementedException();
+            Dictionary<string, int> d = new Dictionary<string, int>();
+            Regex regex = new Regex(@"\w(?<!\d)[\w'-]*");
+            MatchCollection allWords =  regex.Matches(input);
+
+
+            //string[] words = input.Split(" ,\n,\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            foreach (Match word in allWords)
+            {
+                /*if (word.Value == " ")
+                    continue;
+                else*/ if (d.ContainsKey(word.Value))
+                    d[word.Value]++;
+                else
+                    d[word.Value] = 1;
+            }
+            return d;
         }
-        public static async Task<Dictionary<string, int>> FreqAnalysisFromUrl(string url)
+        public static async Task<FAResult> FreqAnalysisFromUrl(string url)
         {
-            HttpClient httpClient = new ();
+            HttpClient httpClient = new();
             var content = await httpClient.GetStringAsync(url);
-            return FreqAnalysisFromString(content);
+            var dic= FreqAnalysisFromString(content);
+            return new FAResult() { Source = url, SourceType = SourceType.URL, Words = dic };
         }
         public static Dictionary<string, int> FreqAnalysisFromFile(string file)
         {
@@ -19,4 +36,5 @@
             return FreqAnalysisFromString(content);
         }
     }
+
 }
