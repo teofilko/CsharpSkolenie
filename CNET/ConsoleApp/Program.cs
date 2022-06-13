@@ -2,7 +2,11 @@
 using Model;
 
 Console.WriteLine("Hello, World!");
-FAResult fAResult =new FAResult( "file", SourceType.FILE);
+FAResult fAResult = new FAResult()
+{
+    Source = "file",
+    SourceType = SourceType.FILE
+};
 
 Console.WriteLine(fAResult);
 

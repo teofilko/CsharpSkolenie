@@ -10,13 +10,6 @@
     /// </summary>
     public class FAResult
     {
-        public  FAResult(string source, SourceType sourceType)
-        {
-            Source = source;
-            SourceType = sourceType;
-            Words = new Dictionary<string, int>();
-        }
-
         /// <summary>
         /// Zdroj textu
         /// </summary>
@@ -26,7 +19,7 @@
         /// <summary>
         /// Vysledna frekvencna analyza slov
         /// </summary>
-        public Dictionary<string,int> Words { get; set; }
+        public Dictionary<string,int> Words { get; set; }= new Dictionary<string, int>();
 
         public override string ToString() =>  $"{Source} {Words?.Count}";
         
