@@ -20,5 +20,7 @@
         </ScrollViewer>
         <Button x:Name="btnLoadParallel" Content="Parallel" Grid.Row="0" HorizontalAlignment="Left" Margin="112,10,0,0" VerticalAlignment="Top" FontSize="36" Click="btnLoadParallel_Click"/>
         <Button x:Name="btnLoadParallelAsync" Content="ParallelAsync" Grid.Row="0" HorizontalAlignment="Left" Margin="251,9,0,0" VerticalAlignment="Top" FontSize="36" Click="btnLoadParallelAsync_Click"/>
+        <Button x:Name="btnTaskAll" Content="Task All" Grid.Row="0" HorizontalAlignment="Left" Margin="653,9,0,0" VerticalAlignment="Top" FontSize="36" Click="btnTaskAll_Click"/>
+        <Button x:Name="btnTaskFirst" Content="Task First" Grid.Row="0" HorizontalAlignment="Left" Margin="481,9,0,0" VerticalAlignment="Top" FontSize="36" Click="btnTaskFirst_Click"/>
     </Grid>
 </Window>

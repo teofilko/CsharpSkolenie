@@ -85,7 +85,7 @@ namespace WpfApp
 
         private async void  btnLoadParallelAsync_Click(object sender, RoutedEventArgs e)
         {
-            Mouse.OverrideCursor = Cursors.Wait;
+           Mouse.OverrideCursor = Cursors.Wait;
             System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
             txbInfo.Text = "Načítám súbory..\n";
             var files = Directory.EnumerateFiles(@"C:\Users\StudentEN\Documents\words");
@@ -108,6 +108,49 @@ namespace WpfApp
 
             sw.Stop();
             progress.Report($"elapsed millisecounds: {sw.ElapsedMilliseconds}");
+            Mouse.OverrideCursor = null;
+        }
+
+        private void btnTaskFirst_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+            string url = "https://seznam.cz";
+            string url1 = "https://seznamzpravy.cz";
+            string url2 = "https://www.ictpro.cz";
+
+            var t1=Task.Run(() => WebLoad.LoadUrl(url));
+            var t2=Task.Run(() => WebLoad.LoadUrl(url1));
+            var t3=Task.Run(() => WebLoad.LoadUrl(url2));
+
+            Task.WaitAny(t1, t2, t3);
+            txbInfo.Text += "\nDobehol prvý task";
+
+            sw.Stop();
+            txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
+            Mouse.OverrideCursor = null;
+
+        }
+
+        private void btnTaskAll_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+            string url = "https://seznam.cz";
+            string url1 = "https://seznamzpravy.cz";
+            string url2 = "https://www.ictpro.cz";
+
+            var t1 = Task.Run(() => WebLoad.LoadUrl(url));
+            var t2 = Task.Run(() => WebLoad.LoadUrl(url1));
+            var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
+
+            Task.WaitAll(t1, t2, t3);
+            txbInfo.Text += "\nDobehly všetky tasky";
+
+            sw.Stop();
+            txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
             Mouse.OverrideCursor = null;
         }
     }
