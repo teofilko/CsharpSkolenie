@@ -153,5 +153,47 @@ namespace WpfApp
             txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
             Mouse.OverrideCursor = null;
         }
+
+        private async void btnTaskFirst_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+            string url = "https://seznamO.cz";
+            string url1 = "https://seznamzpravy.cz";
+            string url2 = "https://www.ictpro.cz";
+
+            var t1 = Task.Run(() => WebLoad.LoadUrl(url));
+            var t2 = Task.Run(() => WebLoad.LoadUrl(url1));
+            var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
+
+            var firstDone = await Task.WhenAny(t1, t2, t3);
+            txbInfo.Text += $"\nDobehol prvý task, web lenght {firstDone.Result}";
+
+            sw.Stop();
+            txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
+            Mouse.OverrideCursor = null;
+        }
+
+        private async void btnTaskAll_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+            string url = "https://seznamO.cz";
+            string url1 = "https://seznamzpravy.cz";
+            string url2 = "https://www.ictpro.cz";
+
+            var t1 = Task.Run(() => WebLoad.LoadUrl(url));
+            var t2 = Task.Run(() => WebLoad.LoadUrl(url1));
+            var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
+
+            var allDone = await Task.WhenAll(t1, t2, t3);
+            txbInfo.Text += $"\nWeby jsou dlohé {string.Join(", ", allDone)}";
+
+            sw.Stop();
+            txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
+            Mouse.OverrideCursor = null;
+        }
     }
 }
