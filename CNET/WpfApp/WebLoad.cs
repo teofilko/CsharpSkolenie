@@ -10,18 +10,18 @@ namespace WpfApp
 {
     internal class WebLoad
     {
-        public static int LoadUrl(string url)
+        public static (int Length, string Url, bool success) LoadUrl(string url)
         {
             try
             {
                 HttpClient httpCient = new HttpClient();
                 var content = httpCient.GetStringAsync(url).Result;
-                return content.Length;
+                return (content.Length, url, true);
             }
             catch (Exception ex)
             {
-                File.AppendAllText("errors.txt",$"LoadUrl: {DateTime.Now} {ex.Message}\n");                
-                return -1;
+                File.AppendAllText("errors.txt", $"LoadUrl: {DateTime.Now} {ex.Message}\n");
+                return (-1, url, false);
             }
         }
     }

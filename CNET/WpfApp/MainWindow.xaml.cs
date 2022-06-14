@@ -168,7 +168,7 @@ namespace WpfApp
             var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
 
             var firstDone = await Task.WhenAny(t1, t2, t3);
-            txbInfo.Text += $"\nDobehol prvý task, web lenght {firstDone.Result}";
+            txbInfo.Text += $"\nDobehol prvý task {firstDone.Result}";
 
             sw.Stop();
             txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
@@ -189,7 +189,7 @@ namespace WpfApp
             var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
 
             var allDone = await Task.WhenAll(t1, t2, t3);
-            txbInfo.Text += $"\nWeby jsou dlohé {string.Join(", ", allDone)}";
+            txbInfo.Text += $"\nDĺžka webov {string.Join(", ", allDone)}";
 
             sw.Stop();
             txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
