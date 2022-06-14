@@ -36,7 +36,7 @@ static void GreetClient(IGreetable client)
     Console.WriteLine(client.SayHello());
 }
 
-
+/*
 static void FrequentWords()
 {
     string booksdir = @"C:\Users\StudentEN\source\repos\CsharpSkolenie\CNET\Books";
@@ -72,3 +72,4 @@ static void FrequentWords()
     fAResult.Words = new Dictionary<string, int>();
     Console.WriteLine(fAResult);
 }
+*/
