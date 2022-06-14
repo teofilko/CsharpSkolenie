@@ -8,11 +8,11 @@ var strings = new[] { "zero", "one", "two", "three", "four",
     "five", "six", "seven", "eight", "nine" };
 
 Console.WriteLine(numbers.Select(n => strings[n]).Aggregate("Result: ", (a, b) => a + b + ","));
-print(numbers.Select((n) => (strings[n])));
+print(numbers.Select((n) => new { n, name = strings[n] }));
 
-void print(IEnumerable<object> colection)
+void print(IEnumerable<object> collection)
 {
-    foreach (object o in colection)
+    foreach (object o in collection)
     {
         Console.WriteLine(o);
     }
