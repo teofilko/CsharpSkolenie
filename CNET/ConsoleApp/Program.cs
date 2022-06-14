@@ -18,6 +18,24 @@ void print(IEnumerable<object> collection)
     }
 }
 
+Client client1 = new() { Name = "Petr" };
+Client client2 = new() { Name = "Alena" };
+VIPClient client3 = new() { Name = "Monika",Status = "GOLD" };
+
+List<IGreetable> clients = new List<IGreetable>() { client1, client2, client3 };
+
+clients.ForEach(c => GreetClient(c));
+
+//GreetClient(client1);
+//GreetClient(client2);
+//GreetClient(client3);
+
+
+static void GreetClient(IGreetable client)
+{
+    Console.WriteLine(client.SayHello());
+}
+
 
 static void FrequentWords()
 {
