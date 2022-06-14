@@ -26,23 +26,32 @@ namespace WpfApp
             InitializeComponent();
         }
 
-        private void btnLoadFiles_Click(object sender, RoutedEventArgs e)
+        private async void btnLoadFiles_Click(object sender, RoutedEventArgs e)
         {
             Mouse.OverrideCursor = Cursors.Wait;
             System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
             txbInfo.Text = "Načítám súbory..\n";
             var files = Directory.EnumerateFiles(@"C:\Users\StudentEN\Documents\words");
-            foreach (var file in files)
+            IProgress<string> progress = new Progress<string>(message =>
             {
-                var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
-                txbInfo.Text += result.Source + '\n';
-                foreach (var word in result.GetTopTen())
+                txbInfo.Text += message;
+            });
+                string message = "";
+            await Task.Run(() =>
+            {
+                foreach (var file in files)
                 {
-                    txbInfo.Text += $"{word.Key} : {word.Value}\n";
-                }
-            }
+                    var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
+                    message += result.Source + '\n';
+                    foreach (var word in result.GetTopTen())
+                    {
+                        message += $"{word.Key} : {word.Value}\n";
+                    }
+             progress.Report(message);
+               }
+            });
             sw.Stop();
-            txbInfo.Text += $"elapsed millisecounds: {sw.ElapsedMilliseconds}";
+            progress.Report($"elapsed millisecounds: {sw.ElapsedMilliseconds}");
             Mouse.OverrideCursor = null;
         }
 
@@ -59,6 +68,34 @@ namespace WpfApp
             });
             string message = "";
             Parallel.ForEach(files, file =>
+            {
+                var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
+                message += result.Source + '\n';
+                foreach (var word in result.GetTopTen())
+                {
+                    message += $"{word.Key} : {word.Value}\n";
+                }
+                progress.Report(message);
+            });
+
+            sw.Stop();
+            progress.Report($"elapsed millisecounds: {sw.ElapsedMilliseconds}");
+            Mouse.OverrideCursor = null;
+        }
+
+        private async void  btnLoadParallelAsync_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+            txbInfo.Text = "Načítám súbory..\n";
+            var files = Directory.EnumerateFiles(@"C:\Users\StudentEN\Documents\words");
+
+            IProgress<string> progress = new Progress<string>(message =>
+            {
+                txbInfo.Text += message;
+            });
+            string message = "";
+            await Parallel.ForEachAsync(files,async( file,cancelationToken) =>
             {
                 var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
                 message += result.Source + '\n';
