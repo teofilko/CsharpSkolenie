@@ -1,40 +1,55 @@
 ﻿using Model;
-using System.Text.RegularExpressions;
+
 namespace Data
 {
     public static class FreqAnalysis
     {
         private static Dictionary<string, int> FreqAnalysisFromString(string input)
         {
-            Dictionary<string, int> d = new Dictionary<string, int>();
-            Regex regex = new Regex(@"\w(?<!\d)[\w'-]*");
-            MatchCollection allWords =  regex.Matches(input);
+            var result = new Dictionary<string, int>();
 
+            var words = input.Split(Environment.NewLine);
 
-            //string[] words = input.Split(" ,\n,\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (Match word in allWords)
+            foreach (var word in words)
             {
-                /*if (word.Value == " ")
-                    continue;
-                else*/ if (d.ContainsKey(word.Value))
-                    d[word.Value]++;
+                if (result.ContainsKey(word))
+                {
+                    result[word] += 1;
+                }
                 else
-                    d[word.Value] = 1;
+                {
+                    result.Add(word, 1);
+                }
             }
-            return d;
+            return result;
         }
+
         public static async Task<FAResult> FreqAnalysisFromUrl(string url)
         {
-            HttpClient httpClient = new();
+            var httpClient = new HttpClient();
             var content = await httpClient.GetStringAsync(url);
-            var dic= FreqAnalysisFromString(content);
-            return new FAResult() { Source = url, SourceType = SourceType.URL, Words = dic };
+            var dict = FreqAnalysisFromString(content);
+
+            return new FAResult()
+            {
+                Source = url,
+                SourceType = SourceType.URL,
+                Words = dict
+            };
         }
-        public static Dictionary<string, int> FreqAnalysisFromFile(string file)
+
+        public static FAResult FreqAnalysisFromFile(string file)
         {
-            string content = File.ReadAllText(file);
-            return FreqAnalysisFromString(content);
+            var content = File.ReadAllText(file);
+            var dict = FreqAnalysisFromString(content);
+
+
+            return new FAResult()
+            {
+                Source = file,
+                SourceType = SourceType.FILE,
+                Words = dict
+            };
         }
     }
-
 }

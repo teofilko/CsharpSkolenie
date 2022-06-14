@@ -28,13 +28,22 @@ namespace WpfApp
 
         private void btnLoadFiles_Click(object sender, RoutedEventArgs e)
         {
-            txbInfo.Text = "Načítám súbory..";
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+            txbInfo.Text = "Načítám súbory..\n";
             var files = Directory.EnumerateFiles(@"C:\Users\StudentEN\Documents\words");
             foreach (var file in files)
             {
-                var result = Model. Data.FreqAnalysis.FreqAnalysisFromFile(file);
-                txbInfo.Text += result.so
+                var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
+                txbInfo.Text += result.Source + '\n';
+                foreach(var word in result.GetTopTen())
+                {
+                    txbInfo.Text += $"{word.Key} : {word.Value}\n";
+                }
             }
+            sw.Stop();
+            txbInfo.Text += $"elapsed millisecounds: {sw.ElapsedMilliseconds}";
+            Mouse.OverrideCursor = null;
         }
     }
 }
