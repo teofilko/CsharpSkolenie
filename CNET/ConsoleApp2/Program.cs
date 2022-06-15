@@ -49,3 +49,16 @@ gropCity.ToList().ForEach(g => g.ToList().ForEach(p => Console.WriteLine(g.Key +
 
 gropCity.ToList().ForEach(g => { Console.WriteLine(g.Key + "///////////////////////////"); g.ToList().ForEach(p => Console.WriteLine(p.FullName)); });
 
+Console.WriteLine();
+
+//Select many - ziskat vsetky zmluvy
+Console.WriteLine("SELECT MANY");
+var zmluvy = dataset.SelectMany(p => p.Contracts);
+Console.WriteLine($"Pocet zmlúv {zmluvy.Count()}");
+
+
+
+Console.WriteLine();
+Console.WriteLine("Posledne podpisana zmluva - kto?");
+var lastZmluvaSkolitel = dataset.Where(p=>p.Contracts.Count>0).OrderBy(p=>p.Contracts.OrderBy(c=>c.Signed).Last().Signed).Last();
+Console.WriteLine($"Posledny podpis {lastZmluvaSkolitel.FullName} {lastZmluvaSkolitel.Contracts.OrderBy(c=>c.Signed).Last().Signed}");
