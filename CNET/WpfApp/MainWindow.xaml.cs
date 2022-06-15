@@ -36,7 +36,7 @@ namespace WpfApp
             {
                 txbInfo.Text += message;
             });
-                string message = "";
+            string message = "";
             await Task.Run(() =>
             {
                 foreach (var file in files)
@@ -47,8 +47,8 @@ namespace WpfApp
                     {
                         message += $"{word.Key} : {word.Value}\n";
                     }
-             progress.Report(message);
-               }
+                    progress.Report(message);
+                }
             });
             sw.Stop();
             progress.Report($"elapsed millisecounds: {sw.ElapsedMilliseconds}");
@@ -83,9 +83,9 @@ namespace WpfApp
             Mouse.OverrideCursor = null;
         }
 
-        private async void  btnLoadParallelAsync_Click(object sender, RoutedEventArgs e)
+        private async void btnLoadParallelAsync_Click(object sender, RoutedEventArgs e)
         {
-           Mouse.OverrideCursor = Cursors.Wait;
+            Mouse.OverrideCursor = Cursors.Wait;
             System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
             txbInfo.Text = "Načítám súbory..\n";
             var files = Directory.EnumerateFiles(@"C:\Users\StudentEN\Documents\words");
@@ -95,7 +95,7 @@ namespace WpfApp
                 txbInfo.Text += message;
             });
             string message = "";
-            await Parallel.ForEachAsync(files,async( file,cancelationToken) =>
+            await Parallel.ForEachAsync(files, async (file, cancelationToken) =>
             {
                 var result = Data.FreqAnalysis.FreqAnalysisFromFile(file);
                 message += result.Source + '\n';
@@ -120,9 +120,9 @@ namespace WpfApp
             string url1 = "https://seznamzpravy.cz";
             string url2 = "https://www.ictpro.cz";
 
-            var t1=Task.Run(() => WebLoad.LoadUrl(url));
-            var t2=Task.Run(() => WebLoad.LoadUrl(url1));
-            var t3=Task.Run(() => WebLoad.LoadUrl(url2));
+            var t1 = Task.Run(() => WebLoad.LoadUrl(url));
+            var t2 = Task.Run(() => WebLoad.LoadUrl(url1));
+            var t3 = Task.Run(() => WebLoad.LoadUrl(url2));
 
             Task.WaitAny(t1, t2, t3);
             txbInfo.Text += "\nDobehol prvý task";
@@ -194,6 +194,42 @@ namespace WpfApp
             sw.Stop();
             txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
             Mouse.OverrideCursor = null;
+        }
+
+        private async void btnTaskAll_Progress_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+
+            IProgress<string> progress = new Progress<string>(message => {
+                txbInfo.Text += message;
+            });
+
+            string[] urls = {"https://seznamO.cz",
+             "https://seznamzpravy.cz",
+             "https://www.ictpro.cz",
+            "https://www.google.cz",
+            "https://www.lidovky.cz",
+            "https://www.novinky.cz",
+            "https://www.bbc.co.uk"};
+
+            List<Task<(int?, string, bool)>> tasks = new();
+            foreach (string url in urls)
+            {
+                tasks.Add(Task.Run(() => WebLoad.LoadUrl(url,progress)));
+            }
+
+            var allDone = await Task.WhenAll(tasks);
+            txbInfo.Text += $"\nDĺžka webov {string.Join(", ", allDone)}";
+
+            sw.Stop();
+            txbInfo.Text += $"\nElapsed millisecons: {sw.ElapsedMilliseconds}";
+            Mouse.OverrideCursor = null;
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            txbInfo.Text = "";
         }
     }
 }
