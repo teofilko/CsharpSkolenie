@@ -1,0 +1,4 @@
+Package Manager Console
+
+add-migration "init"
+update-database
