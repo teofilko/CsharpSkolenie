@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
         public PersonController(PeopleContext db)
         {
             _db = db;
-            _query = _db.Persons.Include(x => x.Contracts).Include(x => x.HomeAddress);
+            _query = _db.Persons.Include(x => x.Contracts).ThenInclude(x=>x.Company).ThenInclude(x=>x.Address).Include(x => x.HomeAddress);
         }
 
         [HttpGet("GetAll")]

@@ -17,7 +17,7 @@ namespace Model
 
         public bool IsActive { get; set; }
 
-        public Company Company { get; set; } = new Company();
+        public Company? Company { get; set; }
 
     }
 }
