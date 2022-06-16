@@ -3,10 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// a
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ContractController : ControllerBase
     {
+        /// <summary>
+        /// b
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAll")]
         public IEnumerable<Model.Contract> GetContract()
         {

@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class PeopleContext : DbContext
+    public class PeopleContext : DbContext
     {
         public DbSet<Person> Persons { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Company> Companys { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

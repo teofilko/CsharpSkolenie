@@ -19,6 +19,7 @@ Console.WriteLine(sortByAge.First());
 
 //anonymni typ
 var newObjects = dataset.Select(p => new { p.FullName, p.DateOfBirth, Age = p.Age() });
+var newCast = newObjects.Cast<(string, DateTime)>();
 foreach (var item in newObjects)
 {
     Console.WriteLine(item.FullName + " " + item.DateOfBirth.ToString("dd.MMMM.yyyy", new System.Globalization.CultureInfo("sk")) + " " + item.Age);
