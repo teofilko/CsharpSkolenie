@@ -1,0 +1,21 @@
+﻿@page "/detail/{id:int}"
+@using Microsoft.EntityFrameworkCore
+@using Model
+@inject PeopleContext db
+<h3>Person Detail</h3>
+Osoba id: @id <br>
+@person<br>
+@person.Email<br>
+@person.HomeAddress.City @person.HomeAddress.Street<br>
+@person.Contracts.Count()<br>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    Person person=new Person();
+    protected override void OnInitialized()
+    {
+        person = db.Persons.Where(x => x.Id == id).Include(x=>x.HomeAddress).Include(x=>x.Contracts).First();
+    }
+}

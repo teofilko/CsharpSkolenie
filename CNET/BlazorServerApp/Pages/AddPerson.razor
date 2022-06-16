@@ -1,0 +1,58 @@
+﻿@page "/add"
+@using Microsoft.EntityFrameworkCore
+@using Model
+@inject PeopleContext db
+<h3>AddPerson</h3>
+
+<div class="mb-3">
+    <label for="firstname" class="form-label">Meno</label>
+    <input @bind-value=person.FirstName type="text" class="form-control" id="firstname" placeholder="Meno">
+</div>
+<div class="mb-3">
+    <label for="lastname" class="form-label">Priezvisko</label>
+    <input @bind-value=person.LastName type="text" class="form-control" id="lastname" placeholder="Priezvisko">
+</div>
+<div class="mb-3">
+    <label for="City" class="form-label">Mesto</label>
+    <input @bind-value=person.HomeAddress.City type="text" class="form-control" id="City" placeholder="Mesto">
+</div>
+<div class="mb-3">
+    <label for="Street" class="form-label">Ulica</label>
+    <input @bind-value=person.HomeAddress.Street type="text" class="form-control" id="Street" placeholder="Ulica">
+</div>
+<div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input @bind-value=person.Email type="email" class="form-control" id="email" placeholder="Email">
+</div>
+
+@message
+<button class="btn btn-primary" @onclick=Save>Ulož</button>
+
+
+@code {
+    public Person person { get; set; } = new Person();
+    string message = "";
+    void Save()
+    {
+        if (person.Id > 0)
+        {
+            //uz existuje editujem
+            db.SaveChanges();
+        }
+        else
+        {
+            db.Persons.Add(person);
+            try
+            {
+                db.SaveChanges();
+                message = person.Id.ToString();
+            }
+            catch (Exception)
+            {
+
+                message = "KO";
+            }
+        }
+
+    }
+}
