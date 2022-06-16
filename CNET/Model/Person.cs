@@ -47,11 +47,11 @@ namespace Model
         [NotMapped] //neuklada do databaze
         public DateOnly DateOfBirthDateOnly
         {
-            get => DateOnly.FromDateTime(DateOfBirth);
-            set => DateOfBirth = value.ToDateTime(new TimeOnly(0));
+            get { return DateOnly.FromDateTime(DateOfBirth); }
+            set { DateOfBirth = value.ToDateTime(new TimeOnly(0)); }
         }
-        public Address HomeAddress { get; set; }
-                                        = new Address();
+        public Address HomeAddress { get; set; } = new Address();
+        
         [MaxLength(250)]
         public string Email { get; set; }
 
